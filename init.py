@@ -1,7 +1,6 @@
-from CircleHandler import CircleHandler
+from CircleHandler import CircleHandler, AnimateCircleHandler
 from globs import *
 import sys
-import time
 
 # Main loop
 running = True
@@ -15,30 +14,16 @@ while running:
     screen.fill(white)
 
     # Draw stickman head with eyes and mouth
-    CircleHandler().draw(black, head_center, head_radius)  # Head
-    CircleHandler().draw(white, (head_center[0] - 15, head_center[1] - 10), eye_radius)  # Left eye
-    CircleHandler().draw(white, (head_center[0] + 15, head_center[1] - 10), eye_radius)  # Right eye
-    CircleHandler().draw(black, (head_center[0], head_center[1] + 10), mouth_radius)  # Mouth
+    CircleHandler().draw(black, headCenter, headRadius)  # Head
+    CircleHandler().draw(white, leftEyeCenter, eyeRadius)  # Left eye
+    CircleHandler().draw(white, rightEyeCenter, eyeRadius)  # Right eye
+    CircleHandler().draw(black, mouthCenter, mouthRadius)  # Mouth
 
-    # Blinking animation
-    pygame.display.flip()
-    blink_duration = 0.1  # Duration of each blink
-    time.sleep(blink_duration)
+    # animation
+    AnimateCircleHandler().animate(black, leftEyeCenter, eyeRadius)  # Left eye blink
+    AnimateCircleHandler().animate(black, rightEyeCenter, eyeRadius)  # Right eye blink
+    AnimateCircleHandler().animate(black, mouthCenter, mouthRadius)  # Half open mouth
 
-    CircleHandler().draw(black, (head_center[0] - 15, head_center[1] - eye_radius), eye_radius)  # Half open Left eye (close)
-    CircleHandler().draw(black, (head_center[0] + 15, head_center[1] - eye_radius), eye_radius)  # Half open Right eye (close)
-    pygame.display.flip()
-    time.sleep(blink_duration)
-
-    # Talking animation (mouth movement)
-    CircleHandler().draw(white, (head_center[0], head_center[1] + mouth_radius), mouth_radius)  # Clear mouth
-    pygame.display.flip()
-    talk_duration = 0.5  # Duration of each talking cycle
-    time.sleep(talk_duration / 2)
-
-    CircleHandler().draw(black, (head_center[0], head_center[1] + mouth_radius/2), mouth_radius)  # Half open mouth
-    pygame.display.flip()
-    time.sleep(talk_duration / 2)
 
 # Quit Pygame
 pygame.quit()
