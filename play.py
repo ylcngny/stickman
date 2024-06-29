@@ -1,7 +1,7 @@
 import pyaudio
 import soundfile as sf
 import threading
-import time
+
 
 class WAVPlayer:
     def __init__(self, file_path):
@@ -39,11 +39,11 @@ class WAVPlayer:
             self.thread.join()
             self.thread = None
 
-    def __del__(self):
-        if self.stream is not None:
-            self.stream.stop_stream()
-            self.stream.close()
-        self.p.terminate()
+    # def __del__(self):
+    #     if self.stream is not None:
+    #         self.stream.stop_stream()
+    #         self.stream.close()
+    #     self.p.terminate()
 
     def get_duration(self):
         num_frames = self.data.shape[0]

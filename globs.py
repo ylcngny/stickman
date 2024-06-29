@@ -11,14 +11,15 @@ pygame.display.set_caption("Stickman Animation")
 black = (0, 0, 0)
 white = (255, 255, 255)
 blue = (0, 0, 255)
+red = (255, 0, 0)
 
 # Define stickman head and components
-headCenter = (400, 200)
-headRadius = 40
+headCenter = (400, 150)
+headRadius = 60
 
-eyeRadius = 5
-leftEyeCenter = (headCenter[0] - 15, headCenter[1])
-rightEyeCenter = (headCenter[0] + 15, headCenter[1])
+eyeRadius = 10
+leftEyeCenter = (headCenter[0] - 30, headCenter[1] -5)
+rightEyeCenter = (headCenter[0] + 30, headCenter[1]-5)
 
-mouthRadius = 10
-mouthCenter = (headCenter[0], headCenter[1] + mouthRadius*2)
+mouthRadius = 20
+mouthCenter = (headCenter[0], headCenter[1] + 10)

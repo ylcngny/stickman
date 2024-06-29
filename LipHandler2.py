@@ -6,8 +6,8 @@ from nltk.corpus import cmudict
 nltk.data.path.append(os.path.join(os.getcwd(), "nltk_data"))
 
 # Download necessary NLTK data if not already downloaded
-nltk.download('cmudict', download_dir=os.path.join(os.getcwd(), "nltk_data"))
-nltk.download('punkt', download_dir=os.path.join(os.getcwd(), "nltk_data"))
+# nltk.download('cmudict', download_dir=os.path.join(os.getcwd(), "nltk_data"))
+# nltk.download('punkt', download_dir=os.path.join(os.getcwd(), "nltk_data"))
 
 # Load CMU Pronouncing Dictionary
 pronouncing_dict = cmudict.dict()
@@ -24,9 +24,9 @@ class PhonemeClusterer:
     def assign_clusters(self):
         # Define basic lip positions based on common phonetic features
         lip_positions = {
-            'O': ['AA', 'AE', 'AH', 'AO', 'EH', 'ER', 'EY', 'IH', 'IY', 'OW', 'UH', 'UW'],
-            'C': ['B', 'D', 'G', 'JH', 'L', 'M', 'N', 'NG', 'R', 'V', 'W', 'Y', 'Z'],
-            'H': []  # Initialize empty for half-open, will be filled below
+            'O': ['IY', 'IH', 'EY', 'EH', 'AE', 'AA', 'AO', 'OW', 'UH', 'UW', 'AH', 'ER', 'AY', 'AW', 'OY'],
+            'C': ['P', 'B', 'T', 'D', 'K', 'G', 'M', 'N', 'NG', 'L', 'R', 'W', 'Y'],
+            'H': ['F', 'V', 'TH', 'DH', 'S', 'Z', 'SH', 'ZH', 'HH', 'CH', 'JH']
         }
 
         # Assign half-open lip position to remaining phonemes not explicitly listed
@@ -80,10 +80,3 @@ class LipPositionExtractor:
                     lip_positions.append(pos)
 
         return lip_positions
-
-
-# # Example usage:
-# if __name__ == "__main__":
-#     sentence = "Lets review the code and see if there are any improvements or adjustments that can be made"
-#     lip_positions = LipPositionExtractor().extract_lip_positions(sentence)
-#     print("Lip Positions:", lip_positions)
