@@ -1,6 +1,7 @@
 import pyaudio
 import soundfile as sf
 import threading
+import time
 
 class WAVPlayer:
     def __init__(self, file_path):
@@ -10,19 +11,23 @@ class WAVPlayer:
         self.thread = None
         self.data, self.samplerate = sf.read(file_path, dtype='float32')
 
-    def _play(self):
+    def _play(self, skip_time_ms=0):
+        skip_frames = int((skip_time_ms / 1000) * self.samplerate)
         self.stream = self.p.open(format=pyaudio.paFloat32,
                                   channels=len(self.data.shape),
                                   rate=self.samplerate,
                                   output=True)
-        self.stream.write(self.data.tobytes())
+
+        # Skip frames
+        self.stream.write(self.data[skip_frames:].tobytes())
+
         self.stream.stop_stream()
         self.stream.close()
         self.stream = None
 
-    def play(self):
+    def play(self, skip_time_ms=0):
         if self.stream is None and self.thread is None:
-            self.thread = threading.Thread(target=self._play)
+            self.thread = threading.Thread(target=self._play, args=(skip_time_ms,))
             self.thread.start()
 
     def stop(self):
