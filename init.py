@@ -36,6 +36,12 @@ while running:
     print("animDur", animDur)
     player.play()
     time.sleep(1)  # silence at the beginning
+
+    # write
+    font = pygame.font.Font(None, 25)  # None uses the default font, 74 is the font size
+    text_surface = font.render(text, True, black)
+    screen.blit(text_surface, (headCenter[0]-385, headCenter[1] + 60))
+
     for key in myMap:
         if key == "C":
             continue
