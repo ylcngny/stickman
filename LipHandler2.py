@@ -74,9 +74,10 @@ class LipPositionExtractor:
             else:
                 print(f"Word: {word} => No phonemes found")
 
+            positions = []
             for phoneme in phonemes:
                 pos = self.phoneme_clusterer.get_cluster(phoneme)
                 if pos:
-                    lip_positions.append(pos)
-
+                    positions.append(pos)
+            lip_positions.append([word, positions])
         return lip_positions

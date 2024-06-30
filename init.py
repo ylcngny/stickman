@@ -1,20 +1,24 @@
+import time
+
 from CircleHandler import CircleHandler, AnimateCircleHandler
-from LipHandler2 import LipPositionExtractor
 from globs import *
 import sys
 from play import WAVPlayer
-from voice.voice import VoiceHandler
+# from voice.voice import VoiceHandler
+# from LipHandler2 import LipPositionExtractor
 
-text = "Please provide the answers to these questions so I can create a web page tailored to your preferences"
-VoiceHandler().create(text)
-myMap = LipPositionExtractor().extract_lip_positions(text)
+text = "Lets review the code and see if there are any improvements or adjustments that can be made"
+# VoiceHandler().create(text)
+# myMap = LipPositionExtractor().extract_lip_positions(text)
+myMap = [['Lets', ['C', 'O', 'C', 'H']], ['review', ['C', 'O', 'H', 'C', 'O']], ['the', ['H', 'O']], ['code', ['C', 'O', 'C']], ['and', ['O', 'C', 'C']], ['see', ['H', 'O']], ['if', ['O', 'H']], ['there', ['H', 'O', 'C']], ['are', ['O', 'C']], ['any', ['O', 'C', 'O']], ['improvements', ['O', 'C', 'C', 'C', 'O', 'H', 'C', 'O', 'C', 'C', 'H']], ['or', ['O', 'C']], ['adjustments', ['O', 'H', 'O', 'H', 'C', 'C', 'O', 'C', 'C', 'H']], ['that', ['H', 'O', 'C']], ['can', ['C', 'O', 'C']], ['be', ['C', 'O']], ['made', ['C', 'O', 'C']]]
 print(myMap)
 
 player = WAVPlayer('./voice/voice.wav')
-skipTime = 600  # there are silence at the beginning and at the end
+skipTime = 400  # there are silence at the beginning and at the end
 totalDur = player.get_duration() - (skipTime * 2 / 1000)
-animDur = totalDur / len(myMap)
-print("totalDur", totalDur, "totalChar", len(myMap), "animDur", animDur)
+totalPhonemes = sum(len(item[1]) for item in myMap)
+animDur = totalDur / totalPhonemes
+print("totalDur", totalDur, "totalChar", totalPhonemes, "animDur", animDur)
 
 player.play(skip_time_ms=skipTime)
 
@@ -22,39 +26,31 @@ player.play(skip_time_ms=skipTime)
 running = True
 c = 0
 while running:
-    c += 1
     # Event handling
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
 
-    # Clear the screen
-    screen.fill(white)
-
-    # Draw stickman head with eyes and mouth
-    CircleHandler().draw(black, headCenter, headRadius)  # Head
-    CircleHandler().draw(white, leftEyeCenter, eyeRadius)  # Left eye
-    CircleHandler().draw(white, rightEyeCenter, eyeRadius)  # Right eye
-    # CircleHandler().draw(black, mouthCenter, mouthRadius)  # Mouth
-
     # animation
     # AnimateCircleHandler().animate(black, leftEyeCenter, eyeRadius)  # Left eye blink
     # AnimateCircleHandler().animate(black, rightEyeCenter, eyeRadius)  # Right eye blink
 
-    # write
-    font = pygame.font.Font(None, 25)  # None uses the default font, 74 is the font size
-    text_surface = font.render(text, True, black)
-    screen.blit(text_surface, (headCenter[0]-385, headCenter[1] + 60))
+    posMap = myMap[c][1]
+    for key in posMap:
+        # Clear the screen
+        screen.fill(white)
+        # write
+        word = myMap[c][0]
+        font = pygame.font.Font(None, 25)  # None uses the default font
+        text_surface = font.render(word, True, black)
+        screen.blit(text_surface, (headCenter[0] - 25, headCenter[1] + 90))
+        # animate
+        AnimateCircleHandler().animate(key, animDur)
+    c += 1
 
-    key = myMap[c]
-    if key == "C":
-        AnimateCircleHandler().animate(animDur, black, mouthCenter, mouthRadius)
-    if key == "O":
-        AnimateCircleHandler().animate(animDur, white, mouthCenter, mouthRadius)  # Half open mouth
-    if key == "H":
-        AnimateCircleHandler().animate(animDur, white, mouthCenter, mouthRadius/2)  # full open mouth
-
-    if c >= len(myMap)-1:
+    if c >= len(myMap):
+        time.sleep(5)
         # Quit Pygame
         pygame.quit()
         sys.exit()
+
